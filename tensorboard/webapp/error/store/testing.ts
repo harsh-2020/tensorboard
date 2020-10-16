@@ -12,9 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
-export * from './app_routing/store/app_routing_selectors';
-export * from './experiments/store/experiments_selectors';
-export * from './error/store/error_selectors';
-export * from './metrics/store/metrics_selectors';
-export * from './runs/store/runs_selectors';
-export * from './util/ui_selectors';
+import {ERROR_FEATURE_KEY, ErrorState, State} from './error_types';
+
+export function buildErrorState(override: Partial<ErrorState>): ErrorState {
+  return {
+    latestError: null,
+    ...override,
+  };
+}
+
+export function buildStateFromErrorState(runsState: ErrorState): State {
+  return {[ERROR_FEATURE_KEY]: runsState};
+}

@@ -1,4 +1,4 @@
-/* Copyright 2020 The TensorFlow Authors. All Rights Reserved.
+/* Copyright 2019 The TensorFlow Authors. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -12,9 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
-export * from './app_routing/store/app_routing_selectors';
-export * from './experiments/store/experiments_selectors';
-export * from './error/store/error_selectors';
-export * from './metrics/store/metrics_selectors';
-export * from './runs/store/runs_selectors';
-export * from './util/ui_selectors';
+import {ErrorInfo} from '../types';
+
+export const ERROR_FEATURE_KEY = 'errors';
+
+export interface ErrorState {
+  latestError: ErrorInfo | null;
+}
+
+export interface State {
+  [ERROR_FEATURE_KEY]?: ErrorState;
+}

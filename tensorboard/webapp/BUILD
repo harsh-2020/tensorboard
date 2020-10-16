@@ -39,6 +39,7 @@ ng_module(
     ],
     deps = [
         "//tensorboard/webapp/app_routing/store",
+        "//tensorboard/webapp/error/store",
         "//tensorboard/webapp/experiments/store:selectors",
         "//tensorboard/webapp/metrics/store",
         "//tensorboard/webapp/runs/store:selectors",
@@ -83,6 +84,8 @@ ng_module(
         "//tensorboard/webapp/core/store",
         "//tensorboard/webapp/core/views:hash_storage",
         "//tensorboard/webapp/core/views:page_title",
+        "//tensorboard/webapp/error",
+        "//tensorboard/webapp/error/views:error_snackbar",
         "//tensorboard/webapp/experiments",
         "//tensorboard/webapp/feature_flag",
         "//tensorboard/webapp/header",
@@ -108,6 +111,7 @@ ng_module(
     deps = [
         "//tensorboard/webapp/app_routing/store:types",
         "//tensorboard/webapp/core/store",
+        "//tensorboard/webapp/error/store:types",
         "//tensorboard/webapp/experiments/store:types",
         "//tensorboard/webapp/feature_flag/store:types",
         "//tensorboard/webapp/metrics/store:types",
@@ -215,6 +219,8 @@ tf_ng_web_test_suite(
         "//tensorboard/webapp/core/store:core_store_test_lib",
         "//tensorboard/webapp/core/views:test_lib",
         "//tensorboard/webapp/deeplink:deeplink_test_lib",
+        "//tensorboard/webapp/error/store:test_lib",
+        "//tensorboard/webapp/error/views:views_test",
         "//tensorboard/webapp/feature_flag/effects:effects_test_lib",
         "//tensorboard/webapp/feature_flag/store:store_test_lib",
         "//tensorboard/webapp/header:test_lib",

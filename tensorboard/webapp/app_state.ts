@@ -16,6 +16,7 @@ limitations under the License.
 import {State as AppRoutingState} from './app_routing/store/app_routing_types';
 import {State as CoreState} from './core/store/core_types';
 import {State as ExperimentsState} from './experiments/store/experiments_types';
+import {State as ErrorState} from './error/store/error_types';
 import {State as FeatureFlagState} from './feature_flag/store/feature_flag_types';
 import {State as MetricsState} from './metrics/store/metrics_types';
 import {State as NpmiState} from './plugins/npmi/store/npmi_types';
@@ -25,6 +26,7 @@ import {State as TextState} from './plugins/text_v2/store/text_types';
 export type State = AppRoutingState &
   CoreState &
   ExperimentsState &
+  ErrorState &
   FeatureFlagState &
   MetricsState &
   NpmiState &

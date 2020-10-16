@@ -12,9 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
-export * from './app_routing/store/app_routing_selectors';
-export * from './experiments/store/experiments_selectors';
-export * from './error/store/error_selectors';
-export * from './metrics/store/metrics_selectors';
-export * from './runs/store/runs_selectors';
-export * from './util/ui_selectors';
+import {createSelector, createFeatureSelector} from '@ngrx/store';
+import {ErrorInfo} from '../types';
+import {ErrorState, State, ERROR_FEATURE_KEY} from './error_types';
+
+/** @typehack */ import * as _typeHackSelector from '@ngrx/store/src/selector';
+/** @typehack */ import * as _typeHackStore from '@ngrx/store/store';
+
+const selectErrorState = createFeatureSelector<State, ErrorState>(
+  ERROR_FEATURE_KEY
+);
+
+export const getLatestError = createSelector(
+  selectErrorState,
+  (state: ErrorState): ErrorInfo | null => {
+    return state.latestError;
+  }
+);

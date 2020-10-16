@@ -12,9 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
-export * from './app_routing/store/app_routing_selectors';
-export * from './experiments/store/experiments_selectors';
-export * from './error/store/error_selectors';
-export * from './metrics/store/metrics_selectors';
-export * from './runs/store/runs_selectors';
-export * from './util/ui_selectors';
+import {NgModule} from '@angular/core';
+import {StoreModule} from '@ngrx/store';
+
+import {reducers} from './store';
+import {ERROR_FEATURE_KEY} from './store/error_types';
+import {ErrorSnackbarModule} from './views/error_snackbar_module';
+
+@NgModule({
+  imports: [
+    StoreModule.forFeature(ERROR_FEATURE_KEY, reducers),
+    ErrorSnackbarModule,
+  ],
+})
+export class ErrorModule {}
