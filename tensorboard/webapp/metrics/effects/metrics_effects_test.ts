@@ -25,6 +25,8 @@ import {of, Subject} from 'rxjs';
 
 import {buildNavigatedAction} from '../../app_routing/testing';
 import {State} from '../../app_state';
+import * as errorActions from '../../error/actions';
+import {ErrorText} from '../../error/types';
 import * as selectors from '../../selectors';
 import * as actions from '../actions';
 import {
@@ -629,5 +631,41 @@ describe('metrics effects', () => {
         expect(actualActions).toEqual([]);
       });
     }
+  });
+
+  describe('reportErrors', () => {
+    describe('create pin', () => {
+      it('reports an error when toggling 1 pin', () => {
+        store.overrideSelector(selectors.getCanCreateNewPins, false);
+        const selectSpy = spyOn(store, 'select').and.callThrough();
+        selectSpy
+          .withArgs(selectors.getCardPinnedState, 'card1')
+          .and.returnValue(of(false));
+        store.refreshState();
+
+        // Pin the unpinned card.
+        actions$.next(actions.cardPinStateToggled({cardId: 'card1'}));
+
+        expect(actualActions).toEqual([
+          errorActions.errorReported({
+            details: ErrorText.CREATE_PIN_MAX_EXCEEDED,
+          }),
+        ]);
+      });
+
+      it('does not report an error when toggling off a pin', () => {
+        store.overrideSelector(selectors.getCanCreateNewPins, false);
+        const selectSpy = spyOn(store, 'select').and.callThrough();
+        selectSpy
+          .withArgs(selectors.getCardPinnedState, 'card1')
+          .and.returnValue(of(true));
+        store.refreshState();
+
+        // Unpin the pinned card.
+        actions$.next(actions.cardPinStateToggled({cardId: 'card1'}));
+
+        expect(actualActions).toEqual([]);
+      });
+    });
   });
 });

@@ -31,6 +31,8 @@ import {
 } from 'rxjs/operators';
 
 import * as routingActions from '../../app_routing/actions';
+import * as errorActions from '../../error/actions';
+import {ErrorText} from '../../error/types';
 import {State} from '../../app_state';
 import * as selectors from '../../selectors';
 import * as actions from '../actions';
@@ -251,6 +253,25 @@ export class MetricsEffects implements OnInitEffects {
     })
   );
 
+  private readonly reportErrors$ = this.actions$.pipe(
+    ofType(actions.cardPinStateToggled),
+    switchMap((action) => {
+      return this.store
+        .select(selectors.getCardPinnedState, action.cardId)
+        .pipe(take(1));
+    }),
+    withLatestFrom(this.store.select(selectors.getCanCreateNewPins)),
+    tap(([isPinned, canCreateNewPins]) => {
+      if (!isPinned && !canCreateNewPins) {
+        this.store.dispatch(
+          errorActions.errorReported({
+            details: ErrorText.CREATE_PIN_MAX_EXCEEDED,
+          })
+        );
+      }
+    })
+  );
+
   /**
    * In general, this effect dispatch the following actions:
    *
@@ -280,7 +301,12 @@ export class MetricsEffects implements OnInitEffects {
         /**
          * Subscribes to: card visibility, reloads.
          */
-        this.loadTimeSeries$
+        this.loadTimeSeries$,
+
+        /**
+         * Subscribes to: card pin state toggles.
+         */
+        this.reportErrors$
       );
     },
     {dispatch: false}
